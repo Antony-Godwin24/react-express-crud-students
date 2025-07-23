@@ -1,17 +1,21 @@
-# Ignore node modules
+# Top-level .gitignore
+
+# Node dependencies
 client/stdnt-react/node_modules/
 server/node_modules/
 
-# Ignore build folder
+# Build outputs
 client/stdnt-react/build/
 
-# Log files
-*.log
-
-# Environment variables
+# Env files
 *.env
 
-# OS and IDE files
+# Logs
+*.log
+
+# OS-specific
 .DS_Store
 Thumbs.db
+
+# Editor-specific
 .vscode/
