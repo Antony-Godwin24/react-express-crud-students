@@ -1,0 +1,179 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing: border-box;
+  font-family:'Poppins', sans-serif;
+}
+
+.Nav{
+  width:100%;
+  background-color: blue;
+  display: flex;
+  align-items: center;
+  justify-content: center;  
+  font-size: 25px;
+  height:120px;
+  margin-bottom: 50px;
+  flex-direction: column;
+  border-radius: 20px;
+  .links{
+    margin-top: 8px;
+    display: flex;
+    flex-direction: row;
+    gap:120px;
+    a{
+      text-decoration: none;
+      color:white;
+    }
+    a:hover{
+      text-decoration: underline;
+      color:black;
+    }
+  }
+  a{
+    color:white;
+    text-decoration: none;
+  }
+}
+
+.home{
+  h1{
+    font-size: 50px;
+    margin-bottom: 50px;
+  }
+  .btns{
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+  }
+  .one,.two{
+    display: flex;
+    gap:50px;
+    margin-bottom: 50px;
+  }
+  button{
+    height:50px;
+    width:250px;
+    font-size: 20px;
+    border: 2px solid black;
+  }
+  button:hover{
+    background-color: blue;
+    border: 2px solid red;
+    color:white;
+  }
+}
+
+.forms-div{
+    border:2px solid black;
+    width:60%;
+    background-color: blue;
+    color:white;
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    margin-top: 100px;
+    margin-bottom: 100px;
+    p button{
+      width:150px;
+      height:40px;
+      border-radius: 10px;
+    }
+}
+
+.forms-div h1{
+    color:white;
+    margin: auto;
+    font-size: 60px;
+    margin-bottom: 40px;
+}
+
+.forms-div form{
+  width:100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  input{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width:350px;
+    height:40px;
+    font-size: 20px;
+    padding:2%;
+    border-radius: 10px;
+  }
+  button{
+    width:150px;
+    height:40px;
+    border-radius: 10px;
+  }
+}
+
+.forms-div h1{
+    margin-top:20px;
+}
+
+.forms-div label{
+    color:white;
+    font-weight: bolder;
+    font-size: 20px;
+    margin-bottom:20px;
+}
+
+.forms-div p{
+    margin: auto;
+    margin-bottom:20px;
+    font-size:20px;
+    color:white;
+    margin-top: 20px;
+}
+
+.forms-div p a{
+    color:burlywood;
+}
+
+.forms-div button{
+    width:20px;
+    color:black;
+    background-color: white;
+    border:2px solid black;
+}
+
+.forms-div button:hover{
+    color:white;
+    background-color: black;
+    border:2px solid white;
+}
+
+#table{
+  margin:100px auto;
+  width:80%;
+  text-align: center;
+}
+
+.btns-del {
+  display: flex;
+  flex-direction: row;
+  gap:10px; 
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+#two{
+  background-color:red;
+}
+
+#two:hover {
+  background-color: black;
+  color: white;
+  border: 2px solid white;
+}
