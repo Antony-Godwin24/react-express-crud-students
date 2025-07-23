@@ -1,0 +1,17 @@
+# Ignore node modules
+client/stdnt-react/node_modules/
+server/node_modules/
+
+# Ignore build folder
+client/stdnt-react/build/
+
+# Log files
+*.log
+
+# Environment variables
+*.env
+
+# OS and IDE files
+.DS_Store
+Thumbs.db
+.vscode/
