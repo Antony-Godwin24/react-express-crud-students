@@ -37,6 +37,14 @@ const Show = () => {
 
     return (
         <div>
+                <div className='Nav'>
+                    <h1 style={{ marginTop: '20px' }}><a href="/">Students Record</a></h1>
+                    <div className='links'>
+                        <p><a href="/admin">Home</a></p>
+                        <p><a href="/notice">Notice Board</a></p>
+                        <p><a href="/register">Register</a></p>
+                    </div>
+            </div>
             <h1>Student Lists</h1>
             <p><a href="/add">Add New Student</a></p>
             {stdnts.length>0? (<table class="table table-striped" id='table'>

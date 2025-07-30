@@ -11,6 +11,7 @@ const Nav = () => {
                 <p><a href="/delete">Delete</a></p>
                 <p><a href="/show">Show</a></p>
                 <p><a href="/search">Search</a></p>
+                <p><a href="/register">Register</a></p>
             </div>
     </div>
   )

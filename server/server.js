@@ -52,6 +52,28 @@ app.put('/students/:roll',async(req,res)=>{
     }
 })
 
+app.put('/students/updateMe/:userName',async(req,res)=>{
+    const {userName}=req.params
+    const {roll,name,city,pin}=req.body
+    console.log("Username from params:", userName);
+    try{
+        const [exists]=await db.execute('select * from stdnts where name=? and roll=?',[userName,roll])
+        if(exists.length>0){
+            const [rows]=await db.execute('update stdnts set name=?,city=?,pin=? where roll=?',[name,city,pin,roll])
+            console.log('student updated successfully!')
+            res.json({'message':`stdnt with name=${userName} updated successfully!`})
+        }
+        else{
+            console.log('UnAuthorized Credentials used for update!')
+            return res.json({ message: 'Student not found!' });
+        }
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).json({'message':'error encountered on updateMe'})
+    }
+})
+
 app.delete('/students/deleteAll', async (req, res) => {
   try {
     const [result] = await db.execute('DELETE FROM stdnts');
@@ -84,6 +106,53 @@ app.get('/students/search',async(req,res)=>{
     }
     catch(err){
         console.log(err)
+    }
+})
+
+app.post('/signup',async(req,res)=>{
+    const {user,email,pass,repass}=req.body
+    try{
+        if(pass!==repass){
+            console.log('Passwords do not match!')
+            return res.status(400).json({'message':'Passwords do not match!'})
+        }
+        const [exists]=await db.execute('select uname from users where uname=? or email=?',[user,email])
+        if(exists.length>0){
+            console.log('User already exists!')
+            return res.status(400).json({'message':'User already exists with Same Constraints!'})
+        }
+        else{
+            const [rows]=await db.execute('insert into users values (?,?,?)',[user,email,pass])
+            console.log('User registered successfully!')
+            res.json({'message':'User registered successfully!'})
+        }
+    }
+    catch(err){
+        console.log(err)
+        res.status(500).json({'message':'Error registering user'})
+    }
+})
+
+app.post('/login',async(req,res)=>{
+    const {user,email,pass}=req.body;
+    try{
+        const [exists]=await db.execute('SELECT uname from users where uname=? and email=? and pass=?',[user,email,pass])
+        if(exists.length>0){
+            if(user.toLowerCase().includes('admin')){
+                console.log('Admin User logged in successfully!')
+                return res.json({'message':'Admin User logged in successfully!'})
+            }
+            console.log('User logged in successfully!')
+            res.json({'message':'User logged in successfully!'})
+        }
+        else{
+            console.log('Invalid credentials!')
+            res.json({'message':'Invalid credentials!'})
+        }
+    }
+    catch(err){
+        console.log(err)
+        res.status(500).json({'message':'Error logging in user'})
     }
 })
 

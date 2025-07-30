@@ -1,0 +1,52 @@
+import React,{useState} from 'react'
+import {toast} from 'react-toastify'
+import axios from "axios"
+import { useNavigate, Link, Navigate } from 'react-router-dom';
+import Nav from './Nav';
+
+const Signup = () => {
+  const [user,setUser]= useState('');
+    const [email,setEmail]= useState('');
+    const [pass,setPass]= useState('');
+    const [repass,setRePass]= useState('');
+    const Navigate= useNavigate();
+    const handleSignup=async(e)=>{
+        e.preventDefault();
+        const res=await axios.post('http://localhost:3500/signup', {user,email,pass,repass})
+        if(res.data.message.includes('successfully')){
+            toast.success(res.data.message || 'Signup Successful!')
+            setUser('')
+            setEmail('')
+            setPass('')
+            setRePass('')
+            Navigate('/login')
+        }
+        else{
+            toast.error(res.data.message || 'Signup Failed! Please try again.')
+        }
+    }
+    return (
+        <>
+            <div className='Nav'>
+                <h1 style={{ marginTop: '20px' }}><a href="/">Students Record</a></h1>
+                <div className='links'>
+                    <p><a href="/notice">Notice Board</a></p>
+                    <p><a href="/register">Register</a></p>
+                </div>
+            </div>
+            <div className='forms-div'>
+                <h1 className='head-box'>Signup</h1>
+                <form onSubmit={handleSignup}>
+                    <input type="text" placeholder='Enter your UserName:' value={user} onChange={(e)=>setUser(e.target.value)} required />
+                    <input type="email" placeholder='Enter your Email:' value={email} onChange={(e)=>setEmail(e.target.value)} required />
+                    <input type="password" placeholder='Enter your Password:' value={pass} onChange={(e)=>setPass(e.target.value)} required />
+                    <input type="password" placeholder='Re-Enter your password:'  value={repass} onChange={(e)=>setRePass(e.target.value)} required/>
+                    <button type='submit'>SignUp</button>
+                </form>
+                <p>Already a User? <a href="/login">Login</a></p>
+            </div>
+        </>
+    )
+}
+
+export default Signup

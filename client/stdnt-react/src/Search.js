@@ -28,6 +28,14 @@ const Search = () => {
     }
     return (
         <>
+            <div className='Nav'>
+                    <h1 style={{ marginTop: '20px' }}><a href="/">Students Record</a></h1>
+                    <div className='links'>
+                        <p><a href="/admin">Home</a></p>
+                        <p><a href="/notice">Notice Board</a></p>
+                        <p><a href="/register">Register</a></p>
+                    </div>
+            </div>
             <div className='forms-div'>
                 <h1 className='head-box'>Search a Student</h1>
                 <form onSubmit={handleSubmit}>
