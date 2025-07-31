@@ -29,9 +29,16 @@ app.post('/students',async(req,res)=>{
             return res.json({'message':`student with roll=${roll} was added already!`})
         }
         else{
-            const [rows]=await db.execute('insert into stdnts values (?,?,?,?,?)',[roll,name,dept,city,pin])
-            console.log('added!')
-            res.json({'message':'stdnt added!'})
+            const [exists]=await db.execute('select * from users where uname=?',[name])
+            if(exists.length>0){
+                const [rows]=await db.execute('insert into stdnts values (?,?,?,?,?)',[roll,name,dept,city,pin])
+                console.log('added!')
+                res.json({'message':'student wad added successfully!'})
+            }
+            else{
+                console.log('user must register first before adding!')
+                res.json({'message':'student must have registered before adding to the list!'})
+            }
         }
     }
     catch(err){
@@ -119,7 +126,7 @@ app.post('/signup',async(req,res)=>{
         const [exists]=await db.execute('select uname from users where uname=? or email=?',[user,email])
         if(exists.length>0){
             console.log('User already exists!')
-            return res.status(400).json({'message':'User already exists with Same Constraints!'})
+            return res.status(400).json({'message':'User already exists with Same Credentials!'})
         }
         else{
             const [rows]=await db.execute('insert into users values (?,?,?)',[user,email,pass])
@@ -153,6 +160,89 @@ app.post('/login',async(req,res)=>{
     catch(err){
         console.log(err)
         res.status(500).json({'message':'Error logging in user'})
+    }
+})
+
+app.post('/notice',async(req,res)=>{
+    const {info,formatted}=req.body;
+    try{
+        const [rows]=await db.execute('insert into notice (info,Time) values (?,?)',[info,formatted])
+        console.log('Notice added successfully!')
+        res.json({'message':'Notice added successfully!'})
+    }
+    catch(err){
+        console.log(err)
+        res.status(500).json({'message':'Error adding notice'})
+    }
+})
+
+app.get('/notice',async(req,res)=>{
+    try{
+        const [rows]=await db.execute('select * from notice')
+        console.log('Notices fetched successfully!')
+        res.json(rows)
+    }
+    catch(err){
+        console.log(err)
+        res.status(500).json({'message':'Error fetching notices'})
+    }
+})
+
+app.put('/notice/:id',async(req,res)=>{
+    const {id}=req.params;
+    const {cont,formatted}=req.body;
+    try{
+        const [rows]=await db.execute('update notice set info=? , Time=? where id=?',[cont,formatted,id]);
+        console.log('Notice updated successfully!')
+        res.json({'message':'Notice updated successfully!'})
+    }
+    catch(err){
+        console.log(err)
+        res.status(500).json({'message':'Error updating notice'})
+    }
+})
+
+app.delete('/notice/:id',async(req,res)=>{
+    const {id}=req.params;
+    try{
+        const [rows]=await db.execute('delete from notice where id=?',[id])
+        console.log('Notice deleted successfully!')
+        res.json({'message':'Notice deleted successfully!'})
+    }catch(err){
+        console.log(err)
+        res.status(500).json({'message':'Error deleting notice'})
+    }
+})
+
+app.get('/students/:userName',async(req,res)=>{
+    const {userName}=req.params;
+    try{
+        const [rows]=await db.execute('select * from stdnts where name=?',[userName])
+        if(rows.length>0){
+            console.log('User details fetched successfully!')
+            res.json(rows)
+        }
+        else{
+            console.log('User not found!')
+            res.status(404).json({'message':'User not found!'})
+        }
+    }catch(err){
+        console.log(err)
+        res.status(500).json({'message':'Error fetching user details'})
+    }
+})
+
+app.delete('/students/deleteAccount/:userName',async(req,res)=>{
+    try{
+        const {userName}=req.params
+        const [rows]=await db.execute('delete from users where uname=?',[userName])
+        const [rows2]=await db.execute('delete from stdnts where name=?',[userName])
+        console.log('Account deleted successfully!')
+        res.json({'message':'Account deleted successfully!'})
+    }
+    catch(err){
+        console.log(err)
+        res.status(500).json({'message':'Error deleting account'})
     }
 })
 

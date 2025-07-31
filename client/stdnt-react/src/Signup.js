@@ -2,7 +2,6 @@ import React,{useState} from 'react'
 import {toast} from 'react-toastify'
 import axios from "axios"
 import { useNavigate, Link, Navigate } from 'react-router-dom';
-import Nav from './Nav';
 
 const Signup = () => {
   const [user,setUser]= useState('');

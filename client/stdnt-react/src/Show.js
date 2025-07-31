@@ -43,6 +43,8 @@ const Show = () => {
                         <p><a href="/admin">Home</a></p>
                         <p><a href="/notice">Notice Board</a></p>
                         <p><a href="/register">Register</a></p>
+                        <p><a href="/profile">My Profile</a></p>
+                        <p><a href="/logout">Logout</a></p>
                     </div>
             </div>
             <h1>Student Lists</h1>

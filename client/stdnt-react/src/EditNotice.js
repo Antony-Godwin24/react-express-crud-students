@@ -1,27 +1,34 @@
-import React, { useState } from 'react';
+import React, {useState,useEffect } from 'react';
 import axios from "axios";
 import {toast} from 'react-toastify'
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate,useParams} from 'react-router-dom';
 import moment from 'moment';
 
 const formatted = moment().format('YYYY-MM-DD HH:mm'); 
 
 
-const Notice = () => {
-  const [info, setInfo] = useState('');
+const EditNotice = () => {
+  const [cont, setCont] = useState('');
   const Navigate=useNavigate();
+  const {info,id}=useParams();
 
-  const handleNotice=async(e)=>{
+  useEffect(()=>{
+    if(info){
+      setCont(info);
+    }
+  },[info])
+
+  const handleEditNotice=async(e)=>{
     e.preventDefault();
-    const rows=await axios.post("http://localhost:3500/notice",{info,formatted})
+    const rows=await axios.put(`http://localhost:3500/notice/${id}`,{cont,formatted})
     if(rows.data.message.includes('successfully')){
-      toast.success('Notice added successfully!')
-      setInfo('')
-      Navigate('/admin'); 
+      toast.success('Notice updated successfully!')
+      setCont('')
+      Navigate('/admin');
     }
     else{
       toast.error(rows.data.message || 'Failed to add notice. Please try again.')
-      setInfo('')
+      setCont('')
     }
   }
 
@@ -41,8 +48,8 @@ const Notice = () => {
       </div>
 
       <div className='forms-div'>
-        <h1 className='head-box'>Add a Notice</h1>
-        <form onSubmit={handleNotice}>
+        <h1 className='head-box'>Edit a Notice</h1>
+        <form onSubmit={handleEditNotice}>
           <input
             type="text"
             placeholder="Add a Notice"
@@ -52,16 +59,16 @@ const Notice = () => {
               textAlign: 'center',
               marginBottom: '10px'
             }}
-            onChange={(e) => setInfo(e.target.value)}
-            value={info}
+            onChange={(e) => setCont(e.target.value)}
+            value={cont}
             required
           />
           <br />
-          <button type='submit' style={{marginBottom:'20px'}}>Add</button>
+          <button type='submit' style={{marginBottom:'20px'}}>Update</button>
         </form>
       </div>
     </>
   );
 };
 
-export default Notice;
+export default EditNotice;

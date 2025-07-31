@@ -34,6 +34,8 @@ const Search = () => {
                         <p><a href="/admin">Home</a></p>
                         <p><a href="/notice">Notice Board</a></p>
                         <p><a href="/register">Register</a></p>
+                        <p><a href="/profile">My Profile</a></p>
+                        <p><a href="/logout">Logout</a></p>
                     </div>
             </div>
             <div className='forms-div'>
@@ -75,7 +77,6 @@ const Search = () => {
                         </tbody>
                     </table>
                 }
-                <p><Link to="/"><button class="btn btn-primary">Back to Home</button></Link></p>
                 </div>
             </>
     )

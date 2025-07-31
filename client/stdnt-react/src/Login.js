@@ -3,7 +3,7 @@ import axios from "axios"
 import {toast} from 'react-toastify'
 import { useNavigate} from 'react-router-dom';
 
-const Login = ({userName,setUserName}) => {
+const Login = ({userName,setUserName,roll,setRoll,dept,setDept,city,setCity,pin,setPin}) => {
     const [user,setUser]= useState('');
     const [email,setEmail]= useState('');
     const [pass,setPass]= useState('');
@@ -17,7 +17,8 @@ const Login = ({userName,setUserName}) => {
             setUser('')
             setEmail('')
             setPass('')
-            setUserName(user)
+            localStorage.setItem('userName', user);
+            setUserName(user);
             if(res.data.message.includes('Admin')){
                 Navigate('/admin')
             }

@@ -15,12 +15,16 @@ const Add = () => {
         e.preventDefault()
         try{
             const res=await axios.post('http://localhost:3500/students',form)
-            if(res.data.message && res.data.message.includes('was added already!')){
-                toast.error(res.data.message)
-            }
-            else{
+            if(res.data.message.includes('successfully')){
                 toast.success('Student added successfully!')
                 navigate('/show')
+            }
+            else if(res.data.message.includes('before')){
+                toast.error(res.data.message)
+                navigate('/signup')
+            }
+            else{
+                toast.error(res.data.message || 'Something went wrong!')
             }
             setForm({roll:'',name:'',dept:'',city:'',pin:''})
         }
@@ -38,6 +42,8 @@ const Add = () => {
                         <p><a href="/admin">Home</a></p>
                         <p><a href="/notice">Notice Board</a></p>
                         <p><a href="/register">Register</a></p>
+                        <p><a href="/profile">My Profile</a></p>
+                        <p><a href="/logout">Logout</a></p>
                     </div>
             </div>
             <div className='forms-div'>

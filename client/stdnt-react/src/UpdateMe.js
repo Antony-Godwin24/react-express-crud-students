@@ -41,6 +41,7 @@ const UpdateMe = () => {
                         <p><a href="/stdnts">Home</a></p>
                         <p><a href="/notice">Notice Board</a></p>
                         <p><a href="/register">Register</a></p>
+                        <p><a href="/logout">Logout</a></p>
                     </div>
             </div>
             <div className='forms-div'>
