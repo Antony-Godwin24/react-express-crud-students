@@ -158,11 +158,15 @@ Contributing
 5.Open a Pull Request.
 Report bugs or suggest features via GitHub Issues.
 
-License
-Specify your license here (e.g., MIT).
+## License
+
+This project is a personal portfolio piece and is **not licensed for public use, modification, or distribution**.  
+The source code is shared here for demonstration purposes only.  
+**All rights reserved.**
+
 
 Contact
-Your Name – [Your Email] – [Your LinkedIn/GitHub]
+Antony Godwin S – antonygodwin08@gmail.com / antonygodwinxibc1@gmail.com – [\[Your LinkedIn/GitHub\]](https://www.linkedin.com/in/antony-godwin-s-7143ab2a4/)
 Project Link: https://github.com/Antony-Godwin24/react-express-crud-students
 
 Acknowledgments
