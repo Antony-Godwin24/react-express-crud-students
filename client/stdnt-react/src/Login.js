@@ -10,28 +10,36 @@ const Login = ({userName,setUserName,roll,setRoll,dept,setDept,city,setCity,pin,
     const [pass,setPass]= useState('');
     const Navigate = useNavigate();
 
-    const handleLogin=async(e)=>{
+    const handleLogin = async (e) => {
         e.preventDefault();
-        const res=await axios.post('http://localhost:3500/login', {user,email,pass})
-        if(res.data.message.includes('successfully')){
-            localStorage.setItem('token',res.data.token);
-            toast.success('Login Successful!')
-            setUser('')
-            setEmail('')
-            setPass('')
-            localStorage.setItem('userName', user);
+        try {
+            const res = await axios.post("http://localhost:3500/login", { user, email, pass });
+            if (res.data.message.includes("successfully")) {
+            localStorage.setItem("token", res.data.token);
+            toast.success("Login Successful!");
+            setUser("");
+            setEmail("");
+            setPass("");
+            localStorage.setItem("userName", user);
             setUserName(user);
-            if(res.data.message.includes('Admin')){
-                Navigate('/admin')
+            if (res.data.message.includes("Admin")) {
+                Navigate("/admin");
+            } else {
+                Navigate("/stdnts");
             }
-            else{
-                Navigate('/stdnts')
+            } else {
+            toast.error(res.data.message || "Login Failed! Please try again.");
+            }
+        } catch (error) {
+            // Catch errors like 429 or others
+            if (error.response && error.response.data) {
+            toast.error(error.response.data.message || "Error: " + error.response.status);
+            } else {
+            toast.error("Network or unexpected error occurred");
             }
         }
-        else{
-            toast.error(res.data.message || 'Login Failed! Please try again.')
-        }
-    }
+        };
+
     return (
         <>
             <Nav />
