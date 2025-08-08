@@ -1,0 +1,2 @@
+only stdnts.js have /stdnts in home nav a so we need to have a if..else..
+improve profile.js if needed after 1 completed..

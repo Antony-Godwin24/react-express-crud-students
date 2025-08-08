@@ -4,12 +4,25 @@ const path=require('path')
 const db=require('./db/db')
 const PORT=3500
 const cors = require('cors');
+const jwt=require('jsonwebtoken')
+const bcrypt=require('bcryptjs');
 app.use(cors());
-
+const secretToken="AntoLogAllow@0824"
+const verifyToken=(req,res,next)=>{
+    const authHeader=req.headers['authorization']
+    const token=authHeader && authHeader.split(" ")[1]
+    if(!token) return res.status(403).json({'message':'No token provided!'})
+    jwt.verify(token,secretToken,(err,user)=>{
+        if(err) return res.status(401).json({'message':'Invalid token!'})
+        req.user=user
+        next()
+    })
+}
 
 app.use(express.json())
 
-app.get('/students',async(req,res)=>{
+
+app.get('/students',verifyToken,async(req,res)=>{
     try{
         const [rows]=await db.execute('SELECT * FROM stdnts')
         console.log(rows)
@@ -129,7 +142,8 @@ app.post('/signup',async(req,res)=>{
             return res.status(400).json({'message':'User already exists with Same Credentials!'})
         }
         else{
-            const [rows]=await db.execute('insert into users values (?,?,?)',[user,email,pass])
+            const hashedPass=await bcrypt.hash(pass,10)
+            const [rows]=await db.execute('insert into users values (?,?,?)',[user,email,hashedPass])
             console.log('User registered successfully!')
             res.json({'message':'User registered successfully!'})
         }
@@ -143,14 +157,18 @@ app.post('/signup',async(req,res)=>{
 app.post('/login',async(req,res)=>{
     const {user,email,pass}=req.body;
     try{
-        const [exists]=await db.execute('SELECT uname from users where uname=? and email=? and pass=?',[user,email,pass])
+        const [exists]=await db.execute('SELECT uname,pass from users where uname=? and email=?',[user,email])
         if(exists.length>0){
-            if(user.toLowerCase().includes('admin')){
-                console.log('Admin User logged in successfully!')
-                return res.json({'message':'Admin User logged in successfully!'})
+            const validPass=await bcrypt.compare(pass,exists[0].pass)
+            if(!validPass){
+                return res.status(401).json({'message':'Invalid password'})
             }
-            console.log('User logged in successfully!')
-            res.json({'message':'User logged in successfully!'})
+            const token=jwt.sign({user: exists[0].uname,role: exists[0].uname.toLowerCase().includes('admin')?'admin':'student'},       secretToken,{
+                expiresIn:'2h',
+            })
+            res.json({
+                message:`${exists[0].uname.toLowerCase().includes('admin')?'Admin':'Student'} logged in successfully!`,token,
+            })
         }
         else{
             console.log('Invalid credentials!')
@@ -219,8 +237,16 @@ app.get('/students/:userName',async(req,res)=>{
     try{
         const [rows]=await db.execute('select * from stdnts where name=?',[userName])
         if(rows.length>0){
-            console.log('User details fetched successfully!')
-            res.json(rows)
+            const [exists]=await db.execute('select * from users where uname=?',[userName])
+            if(exists.length>0){
+                console.log('User details fetched successfully!')
+                res.json(rows)
+            }
+            else{
+                console.log('User was not added as a Student!')
+                res.status(404).json({'message':'User was not added as a Student!'})
+            }
+            
         }
         else{
             console.log('User not found!')
@@ -245,5 +271,15 @@ app.delete('/students/deleteAccount/:userName',async(req,res)=>{
         res.status(500).json({'message':'Error deleting account'})
     }
 })
+
+app.get('/getUsers', async (req, res) => {
+    try {
+        const [rows] = await db.execute("SELECT * FROM users");
+        res.json(rows);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 
 app.listen(PORT,()=>console.log(`Server is running at port ${PORT}`))

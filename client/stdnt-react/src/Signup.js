@@ -1,6 +1,7 @@
 import React,{useState} from 'react'
 import {toast} from 'react-toastify'
 import axios from "axios"
+import Nav from './Nav.js';
 import { useNavigate, Link, Navigate } from 'react-router-dom';
 
 const Signup = () => {
@@ -26,13 +27,7 @@ const Signup = () => {
     }
     return (
         <>
-            <div className='Nav'>
-                <h1 style={{ marginTop: '20px' }}><a href="/">Students Record</a></h1>
-                <div className='links'>
-                    <p><a href="/notice">Notice Board</a></p>
-                    <p><a href="/register">Register</a></p>
-                </div>
-            </div>
+            <Nav />
             <div className='forms-div'>
                 <h1 className='head-box'>Signup</h1>
                 <form onSubmit={handleSignup}>

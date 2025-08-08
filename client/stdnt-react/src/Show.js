@@ -2,6 +2,7 @@ import React,{useEffect,useState} from 'react';
 import axios from 'axios';
 import {toast} from 'react-toastify'
 import {Link} from 'react-router-dom';
+import Nav from './Nav.js';
 import Trash from './Trash.svg'
 
 
@@ -12,7 +13,12 @@ const Show = () => {
     useEffect(()=>{
         const fetchStudents=async()=>{
             try{
-                const response=await axios.get('http://localhost:3500/students')
+                const token=await localStorage.getItem('token')
+                const response=await axios.get('http://localhost:3500/students',{
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
                 console.log(response.data)
                 setStdnts(response.data || [])
                 setLoading(false)
@@ -37,16 +43,7 @@ const Show = () => {
 
     return (
         <div>
-                <div className='Nav'>
-                    <h1 style={{ marginTop: '20px' }}><a href="/">Students Record</a></h1>
-                    <div className='links'>
-                        <p><a href="/admin">Home</a></p>
-                        <p><a href="/notice">Notice Board</a></p>
-                        <p><a href="/register">Register</a></p>
-                        <p><a href="/profile">My Profile</a></p>
-                        <p><a href="/logout">Logout</a></p>
-                    </div>
-            </div>
+            <Nav />
             <h1>Student Lists</h1>
             <p><a href="/add">Add New Student</a></p>
             {stdnts.length>0? (<table class="table table-striped" id='table'>

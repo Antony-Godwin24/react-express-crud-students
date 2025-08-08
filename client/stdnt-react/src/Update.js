@@ -2,6 +2,7 @@ import React,{useState} from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import {toast} from 'react-toastify'
+import Nav from './Nav.js';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Update = () => {
@@ -25,16 +26,7 @@ const Update = () => {
 
     return (
         <>
-            <div className='Nav'>
-                    <h1 style={{ marginTop: '20px' }}><a href="/">Students Record</a></h1>
-                    <div className='links'>
-                        <p><a href="/admin">Home</a></p>
-                        <p><a href="/notice">Notice Board</a></p>
-                        <p><a href="/register">Register</a></p>
-                        <p><a href="/profile">My Profile</a></p>
-                        <p><a href="/logout">Logout</a></p>
-                    </div>
-            </div>
+            <Nav />
             <div className='forms-div'>
                 <h1 className='head-box'>Update a Student</h1>
                 <form onSubmit={handleSubmit}>

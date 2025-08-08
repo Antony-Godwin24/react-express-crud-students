@@ -1,8 +1,9 @@
-import React,{useState} from 'react'
+import {useState} from 'react'
 import { Link } from 'react-router-dom';
 import axios from 'axios'
 import {toast} from 'react-toastify'
 import Trash from './Trash.svg'
+import Nav from './Nav.js';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Search = () => {
@@ -28,16 +29,7 @@ const Search = () => {
     }
     return (
         <>
-            <div className='Nav'>
-                    <h1 style={{ marginTop: '20px' }}><a href="/">Students Record</a></h1>
-                    <div className='links'>
-                        <p><a href="/admin">Home</a></p>
-                        <p><a href="/notice">Notice Board</a></p>
-                        <p><a href="/register">Register</a></p>
-                        <p><a href="/profile">My Profile</a></p>
-                        <p><a href="/logout">Logout</a></p>
-                    </div>
-            </div>
+            <Nav />
             <div className='forms-div'>
                 <h1 className='head-box'>Search a Student</h1>
                 <form onSubmit={handleSubmit}>

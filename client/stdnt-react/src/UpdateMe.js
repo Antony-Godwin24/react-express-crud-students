@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import {toast} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
+import Nav from './Nav.js';
 import { useParams } from 'react-router-dom';
 
 
@@ -35,15 +36,7 @@ const UpdateMe = () => {
 
     return (
         <>
-            <div className='Nav'>
-                    <h1 style={{ marginTop: '20px' }}><a href="/">Students Record</a></h1>
-                    <div className='links'>
-                        <p><a href="/stdnts">Home</a></p>
-                        <p><a href="/notice">Notice Board</a></p>
-                        <p><a href="/register">Register</a></p>
-                        <p><a href="/logout">Logout</a></p>
-                    </div>
-            </div>
+            <Nav />
             <div className='forms-div'>
                 <h1 className='head-box'>Update My Details</h1>
                 <form onSubmit={handleSubmit}>

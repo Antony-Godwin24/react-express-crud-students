@@ -1,6 +1,7 @@
 import React,{useState} from 'react'
 import axios from "axios"
 import {toast} from 'react-toastify'
+import Nav from './Nav.js';
 import { useNavigate} from 'react-router-dom';
 
 const Login = ({userName,setUserName,roll,setRoll,dept,setDept,city,setCity,pin,setPin}) => {
@@ -13,6 +14,7 @@ const Login = ({userName,setUserName,roll,setRoll,dept,setDept,city,setCity,pin,
         e.preventDefault();
         const res=await axios.post('http://localhost:3500/login', {user,email,pass})
         if(res.data.message.includes('successfully')){
+            localStorage.setItem('token',res.data.token);
             toast.success('Login Successful!')
             setUser('')
             setEmail('')
@@ -32,13 +34,7 @@ const Login = ({userName,setUserName,roll,setRoll,dept,setDept,city,setCity,pin,
     }
     return (
         <>
-            <div className='Nav'>
-                <h1 style={{ marginTop: '20px' }}><a href="/">Students Record</a></h1>
-                <div className='links'>
-                    <p><a href="/notice">Notice Board</a></p>
-                    <p><a href="/register">Register</a></p>
-                </div>
-            </div>
+            <Nav />
             <div className='forms-div'>
                 <h1 className='head-box'>Login</h1>
                 <form onSubmit={handleLogin}>

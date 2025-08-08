@@ -16,7 +16,9 @@ import NoticeView from './NoticeView.js';
 import UpdateMe from './UpdateMe.js';
 import EditNotice from './EditNotice.js';
 import Logout from './Logout.js';
-import React,{useState} from 'react'
+import ShowAllUsers from './ShowAllUsers.jsx';
+import ProtectedRoute from './ProtectedRoute.jsx';
+import {useState} from 'react'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -33,21 +35,53 @@ function App() {
         <ToastContainer />
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/add' element={<Add />} />
-          <Route path='/search' element={<Search />} />
-          <Route path='/show' element={<Show />} />
-          <Route path='/update' element={<Update />} />
-          <Route path='/delete' element={<Delete />} />
+          <Route path='/add' element={<ProtectedRoute role='admin'><Add /></ProtectedRoute>} />
+          <Route path='/search' element={<ProtectedRoute role='both'><Search /></ProtectedRoute>} />
+          <Route path='/show' element={<ProtectedRoute role='both'><Show /></ProtectedRoute>} />
+          <Route path='/update' element={<ProtectedRoute role='admin'><Update /></ProtectedRoute>} />
+          <Route path='/delete' element={<ProtectedRoute role='admin'><Delete /></ProtectedRoute>} />
           <Route path='/register' element={<Register />} />
           <Route path='/login' element={<Login userName={userName} setUserName={setUserName} roll={roll} setRoll={setRoll} dept={dept} setDept={setDept} city={setCity} setCity={setCity} pin={pin} setPin={setPin} />} />
           <Route path='/signup' element={<Signup />} />
-          <Route path='/admin' element={<Admin Login userName={userName}/>} />
-          <Route path='/stdnts' element={<Stdnts Login userName={userName}/>} />
-          <Route path='/profile' element={<Profile Login userName={userName} setUserName={setUserName} roll={roll} setRoll={setRoll} dept={dept} setDept={setDept} city={setCity} setCity={setCity} pin={pin} setPin={setPin} />} />
-          <Route path='/notice' element={<Notice />} />
-          <Route path='/notice-view' element={<NoticeView />} />
-          <Route path='/update-me/:userName' element={<UpdateMe />} />
-          <Route path='/editNotice/:info/:id' element={<EditNotice />} />
+          <Route path='/admin' element={
+            <ProtectedRoute role='admin'>
+              <Admin Login userName={userName} />
+            </ProtectedRoute>
+          } />
+
+          <Route path='/stdnts' element={<ProtectedRoute role='stdnt'><Stdnts Login userName={userName}/></ProtectedRoute>} />
+
+          <Route path='/profile' element={
+            <ProtectedRoute>
+              <Profile Login userName={userName} setUserName={setUserName} roll={roll} setRoll={setRoll} dept={dept} setDept={setDept} city={city} setCity={setCity} pin={pin} setPin={setPin} />
+            </ProtectedRoute>
+          } />
+
+          <Route path='/notice' element={
+            <ProtectedRoute role='admin'>
+              <Notice />
+            </ProtectedRoute>
+          } />
+          <Route path='/notice-view' element={
+            <ProtectedRoute>
+              <NoticeView />
+            </ProtectedRoute>
+          } />
+
+          <Route path='/update-me/:userName' element={<ProtectedRoute role='both'><UpdateMe /></ProtectedRoute>
+            
+          } />
+          <Route path='/editNotice/:info/:id' element={
+            <ProtectedRoute role='admin'>
+              <EditNotice />
+            </ProtectedRoute>
+          } />
+          <Route path='showAllUsers' element={
+            <ProtectedRoute>
+              <ShowAllUsers />
+            </ProtectedRoute>
+            }
+          />
           <Route path='/logout' element={<Logout userName={userName} setUserName={setUserName} />} />
           <Route path="*" element={<h2>404 Not Found</h2>} />
         </Routes>
