@@ -1,70 +1,176 @@
-# Getting Started with Create React App
+Student Management System (Full Stack – React, Express, MySQL)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Overview
+A full-stack web application for managing students, users, and notices. Built with React.js (frontend), Express.js (backend API), MySQL (database), and modern security practices. Supports CRUD operations, JWT authentication, role-based access control (Admin/Student), input validation, rate limiting, and XSS prevention.
 
-## Available Scripts
+Features
+User Authentication: Sign up, login, logout with JWT tokens and bcrypt password hashing.
+Role-Based Access: Separate Admin and Student dashboards.
+Student CRUD: Add, view, edit, delete, and search students.
+User Management: View registered users (Admin only).
+Notices: Post, view, edit, and delete announcements (Admin only).
+Input Validation & Sanitization: Prevents SQL injection and XSS attacks.
+Rate Limiting: Protects against brute force and abuse.
+Responsive UI: Clean, modern interface built with React.
+Error Handling: User-friendly feedback for validation, auth, and server errors.
+Environment Variables: Secure configuration (database, JWT secret, etc.).
 
-In the project directory, you can run:
+Tech Stack
+Area	Technology
+Frontend	React.js, react-router-dom, axios, react-toastify
+Backend	Node.js, Express.js, mysql2, bcryptjs, jsonwebtoken, express-validator, express-rate-limit
+Database	MySQL
+Security	JWT, bcrypt, input sanitization, rate limiting, CORS
+Development	dotenv, nodemon (optional)
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Setup & Installation
+1. Clone the Repository
+git clone https://github.com/Antony-Godwin24/react-express-crud-students.git
+cd react-express-crud-students
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+2. Backend Setup
+cd server
+npm install
 
-### `npm test`
+Create .env file (see .env.example below) in server/:
+DB_HOST=localhost
+DB_USER=your_mysql_user
+DB_PASSWORD=your_mysql_password
+DB_NAME=students
+JWT_SECRET=your_random_jwt_secret
+JWT_EXPIRES_IN=2h
+PORT=3500
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Start backend server:
+npm start
+# Server runs on http://localhost:3500
 
-### `npm run build`
+3. Database Setup
+Run this in your MySQL client:
+CREATE DATABASE students;
+USE students;
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+CREATE TABLE users (
+  uname VARCHAR(200) NOT NULL PRIMARY KEY,
+  email VARCHAR(100) NOT NULL UNIQUE,
+  pass VARCHAR(200) NOT NULL
+);
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+CREATE TABLE stdnts (
+  roll INT NOT NULL PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  dept VARCHAR(100) NOT NULL,
+  city VARCHAR(100) NOT NULL,
+  pin CHAR(6) NOT NULL
+);
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+CREATE TABLE notice (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  info VARCHAR(500) NOT NULL,
+  Time DATETIME NOT NULL
+);
 
-### `npm run eject`
+4. Frontend Setup
+cd ../client/stdnt-react
+npm install
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Start React app:
+npm start
+# App runs on http://localhost:3000
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Project Structure
+react-express-crud-students/
+├── server/                # Express backend
+│   ├── db/                # Database connection
+│   ├── routes/            # API endpoints
+│   ├── middleware/        # Auth, validation, sanitization
+│   ├── .env               # Environment variables
+│   └── server.js          # Main entry point
+├── client/stdnt-react/    # React frontend
+│   ├── src/
+│   │   ├── components/    # Reusable UI components
+│   │   ├── pages/         # Main views (Login, Signup, Admin, Student)
+│   │   ├── App.js         # Routing and layout
+│   │   └── ...            # Other React setup
+│   └── package.json
+└── README.md              # This file
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
+Security Practices
+Secrets in .env: Never commit credentials or JWT secrets to Git.
+JWT Authentication: Tokens expire, roles enforced, no hardcoded secrets.
+Input Validation: All API inputs validated with express-validator.
+Input Sanitization: Removes <script>, javascript:, and event handlers from user inputs.
+Parameterized Queries: Prevents SQL injection.
+Rate Limiting: Blocks brute force attacks (5 login/signup attempts per 15 min).
+CORS: Configured for development (adjust for production).
+Error Handling: Clear messages for validation, auth, and server errors.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Screenshots 
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+![Home Page](image.png)
+![Add a Notice](image-1.png)
+![View Notice](image-2.png)
+![Register Page](image-3.png)
+![Add a Student](image-5.png)
+![Show All STudents](image-6.png)
 
-### Code Splitting
+API Documentation
+Endpoint	Method	Description	Auth Required	Role
+/signup	POST	Register new user	No	-
+/login	POST	Log in, get JWT token	No	-
+/students	GET	List all students	Yes	Admin
+/students	POST	Add new student	Yes	Admin
+/students/:roll	PUT	Update student by roll	Yes	Admin
+/students/:roll	DELETE	Delete student by roll	Yes	Admin
+/students/search	GET	Search students by name	Yes	Admin
+/notice	POST	Add notice (Admin)	Yes	Admin
+/notice	GET	List all notices	Yes	Both
+/notice/:id	PUT	Update notice by ID	Yes	Admin
+/notice/:id	DELETE	Delete notice by ID	Yes	Admin
+/getUsers	GET	List all users (Admin)	Yes	Admin
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+See server code for full details on request/response formats and validation rules.
 
-### Analyzing the Bundle Size
+Environment Variables (.env)
+# Database
+DB_HOST=localhost
+DB_USER=your_mysql_user
+DB_USER=root
+DB_PASSWORD=your_mysql_password
+DB_NAME=students
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+# JWT
+JWT_SECRET=your_random_64_bytes_secret
+JWT_EXPIRES_IN=2h
 
-### Making a Progressive Web App
+# Server
+PORT=3500
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
+Contributing
+1.Fork the repository.
+2.Create a new feature branch (git checkout -b feature/your-feature).
+3.Commit your changes (git commit -am 'Add some feature').
+4.Push to the branch (git push origin feature/your-feature).
+5.Open a Pull Request.
+Report bugs or suggest features via GitHub Issues.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+License
+Specify your license here (e.g., MIT).
 
-### Deployment
+Contact
+Your Name – [Your Email] – [Your LinkedIn/GitHub]
+Project Link: https://github.com/Antony-Godwin24/react-express-crud-students
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Acknowledgments
+React, Express, MySQL communities
+ZOHO Corporation (for internship experience)
+Create React App (for project scaffolding)
+Toastify, Axios, bcrypt, JWT (for critical libraries)
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This README gives recruiters, collaborators, and users everything needed to understand, run, and appreciate your project.
+Keep it updated as you add features or improve security.
+Good luck with your internship and job search—you’re building strong, recruiter-ready full-stack skills!
